@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -10,22 +12,32 @@ public class SnakePanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	int xpos=10, ypos=10;
-	int direc = 0;
-	boolean running = true;
+	int direc = 0; // for the direction of the snake
+	
+	int gridx = 25; int gridy = 25; // grid size
+	int size = 10; // size of each snake element
+	static boolean running = false;
 	Snake s;
+	
 	public SnakePanel() {
+		setPreferredSize(new Dimension(gridx*size, gridy*size));
+		this.setBackground(Color.WHITE);
 		initializeKeyBindings();
-		s = new Snake();
-		Timer t = new Timer(100, new ActionListener() {
+		s = new Snake(gridx, gridy, size);
+		Timer t = new Timer(200, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (running == true) {
 					s.move();
-					repaint();
+					if (running) // only repaint if we are alive
+						repaint();
 				}
 			}
 		});
 		t.start();
+	}
+	
+	public static void snakeStatus(boolean x) {
+		running = x;
 	}
 	
 	public void updateMovement(int i) {
@@ -37,9 +49,6 @@ public class SnakePanel extends JPanel {
 	// 0 = right, 1 = left, 2 = down, 3 = up
 	private void initializeKeyBindings() {
 		Action doRight = new AbstractAction() {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent e) {

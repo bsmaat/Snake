@@ -18,6 +18,8 @@ public class InputPanel extends JPanel implements ActionListener {
 		JButton bStop = new JButton("Stop");
 		bStart.addActionListener(this);
 		bStart.setActionCommand("start");
+		bStop.addActionListener(this);
+		bStop.setActionCommand("stop");
 		this.add(bStart);
 		this.add(bStop);
 	}
@@ -25,6 +27,10 @@ public class InputPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ("start".equals(e.getActionCommand())) {
 			System.out.println("Start!!");
+			SnakePanel.snakeStatus(true);
+		}
+		if ("stop".equals(e.getActionCommand())) {
+			SnakePanel.snakeStatus(false);
 		}
 	}
 	

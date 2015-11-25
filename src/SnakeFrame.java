@@ -25,7 +25,6 @@ public class SnakeFrame  {
 		contentPane.setLayout(new BorderLayout());
 		
 		SnakePanel p = new SnakePanel();
-		p.setPreferredSize(new Dimension(500,500));
 		p.setBorder(BorderFactory.createLineBorder(Color.black));
 		contentPane.add(p, BorderLayout.CENTER);
 		
