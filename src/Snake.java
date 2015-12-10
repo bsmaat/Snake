@@ -21,6 +21,7 @@ public class Snake {
 	int joints;
 	int snakeSize = 10;
 	int gridx, gridy;
+	int endx = 0, endy = 0;
 
 	public Snake(int gridx, int gridy, int size) {
 		this.size = size;
@@ -52,6 +53,19 @@ public class Snake {
 	public int getPosY() {
 		return this.y.get(0);
 	}
+	public List<Integer> getAllX() {
+		return this.x;
+	}
+	
+	public List<Integer> getAllY() {
+		return this.y;
+	}
+	
+	public void addEl() {
+		//add element to snake right at the end. would want to do this immediately after a move!
+		x.add(endx);
+		y.add(endy);
+	}
 	
 	public void updatePos() {
 		
@@ -69,6 +83,9 @@ public class Snake {
 	
 	// 0 = right, 1 = left, 2 = down, 3 = up
 	public void move() {
+		//store the last elements just incase
+		endx = x.get(x.size() - 1);
+		endy = y.get(y.size() - 1);
 		for(int i=x.size()-1; i>0; i--) {
 			x.set(i, x.get(i-1));
 			y.set(i, y.get(i-1));
@@ -91,6 +108,8 @@ public class Snake {
 		if (isDead() == true) {
 			SnakePanel.running = false;
 		}
+		
+		
 
 	}
 	

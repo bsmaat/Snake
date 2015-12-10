@@ -7,7 +7,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class SnakePanel extends JPanel {
+import java.util.List;
+import java.util.Random;
+;public class SnakePanel extends JPanel {
 	/**
 	 * 
 	 */
@@ -17,6 +19,7 @@ public class SnakePanel extends JPanel {
 	int gridx = 25; int gridy = 25; // grid size
 	int size = 10; // size of each snake element
 	static boolean running = false;
+	boolean foodOn = false; int foodx = 0; int foody=0;
 	Snake s;
 	
 	public SnakePanel() {
@@ -24,10 +27,13 @@ public class SnakePanel extends JPanel {
 		this.setBackground(Color.WHITE);
 		initializeKeyBindings();
 		s = new Snake(gridx, gridy, size);
-		Timer t = new Timer(200, new ActionListener() {
+		Timer t = new Timer(100, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (running == true) {
 					s.move();
+					eat();
+					if (foodOn == false)
+						createFood();
 					if (running) // only repaint if we are alive
 						repaint();
 				}
@@ -101,11 +107,45 @@ public class SnakePanel extends JPanel {
 		//am.put("pause", doWork);
 	}
 	
+	public void createFood() {
+		Random rnd = new Random();
+		foodx = rnd.nextInt(gridx);
+		foody = rnd.nextInt(gridy);
+		boolean unique = false;
+		List<Integer> snakex = s.getAllX();
+		List<Integer> snakey = s.getAllY();
+		while(unique==false) {
+			for (int i=0; i < snakex.size(); i++) {
+				if (foodx == snakex.get(i)) {
+					if (foody == snakey.get(i)) {
+						//generate a new random number
+						foodx = rnd.nextInt(gridx);
+						foody = rnd.nextInt(gridy);
+						break;
+					}
+				} else {
+					unique = true;
+					break;
+				}
+			}
+		}
+		foodOn = true;
+	}
+	
+	public void eat() {
+		if ((s.getPosX() == foodx) && (s.getPosY() == foody)) {
+			s.addEl();
+			foodOn = false;
+		}
+	}
+	
 	
 	// draw the snake
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		s.drawSnake(g);
+		g.setColor(Color.RED);
+		g.fillRect(foodx*size, foody*size, size, size);
 		
 	}
 	
